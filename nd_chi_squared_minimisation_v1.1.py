@@ -111,13 +111,8 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
                               - fitted_value)
                 if working_unc > current_unc[index]:
                     current_unc[index] = working_unc
-        if current_unc == [0] * len(fitted_vals):
+        if current_unc == [0]*len(fitted_vals):
             print("failed to find uncertainties check resolution and range")
-    except ValueError:
-        print("Check the dimensions and values of your input arrays")
-        current_unc = np.array([None]*len(fitted_vals))
-    return current_unc
-
     except ValueError:
         print("Check the dimensions and values of your input arrays")
         current_unc = np.array([None]*len(fitted_vals))
