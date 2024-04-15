@@ -1,5 +1,6 @@
 The code currently is tested with only 1 dataset (v1.1 + support functions with known constants),
-Also the code doesn`t have any input validation yet and it is possible or the code to crash.
+If the code throws a crash for any reason please do leave a comment and I will update the validation 
+inside of the code.
 
 Other than that it works by taking mesh grids of starting values +- a percentage amount of each starting
 value and has some recursive elements (meaning that max array ~900 dimension due to the stack overflow error
