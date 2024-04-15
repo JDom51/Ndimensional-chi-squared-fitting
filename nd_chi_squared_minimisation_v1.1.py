@@ -73,7 +73,6 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
                          percentage_of_variable=0.01, resolution = 100,\
                              known_constants = []):
     """
-    does a lot
     USE THIS
     performs meshgrid operations to find the uncertainties on fitted values
     with chi_val + 1, i.e. 1 standard deviation
@@ -93,14 +92,14 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
     order as fitted_vals
     """
     try:
-       variables = []
-       current_unc = [0] * len(fitted_vals)
-       #generates initial meshes of values
-       for variable in fitted_vals:
-           variables.append(np.linspace(variable*(1-percentage_of_variable), \
-           variable*(1+percentage_of_variable), resolution))
-       meshes = np.meshgrid(*variables)
-       chi_mesh = get_chi_squared_mesh(x_observed, y_observed, dy_observed, \
+        variables = []
+        current_unc = [0] * len(fitted_vals)
+        #generates initial meshes of values
+        for variable in fitted_vals:
+            variables.append(np.linspace(variable*(1-percentage_of_variable), \
+            variable*(1+percentage_of_variable), resolution))
+        meshes = np.meshgrid(*variables)
+        chi_mesh = get_chi_squared_mesh(x_observed, y_observed, dy_observed, \
                                     meshes.copy(), function, known_constants)
         target = chi_val + 1
         dt = target*0.25
@@ -114,6 +113,11 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
                     current_unc[index] = working_unc
         if current_unc == [0] * len(fitted_vals):
             print("failed to find uncertainties check resolution and range")
+    except ValueError:
+        print("Check the dimensions and values of your input arrays")
+        current_unc = np.array([None]*len(fitted_vals))
+    return current_unc
+
     except ValueError:
         print("Check the dimensions and values of your input arrays")
         current_unc = np.array([None]*len(fitted_vals))
