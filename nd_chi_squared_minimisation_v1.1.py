@@ -57,8 +57,8 @@ def get_best_chi_fit(x_observed, y_observed, dy_observed, starting_values,\
     squared
     """
     try:
-    vals = op.fmin(get_chi_squared, starting_values, \
-           args = (x_observed, y_observed, dy_observed, function, \
+        vals = op.fmin(get_chi_squared, starting_values, \
+        args = (x_observed, y_observed, dy_observed, function, \
                    known_constants), full_output = True, disp = True)
     except ValueError:
         vals = [np.array([None]*len(starting_values)), None]
