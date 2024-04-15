@@ -19,7 +19,7 @@ import scipy.optimize as op
 ######################### CHI MINIMISATION VALUES #############################
 
 def get_chi_squared(fun_inputs, x_observed, y_observed, dy_observed, function,\
-                    known_constants = None):
+                    known_constants = []):
     """
     x_observed: np array float
     y_observed: np array float
@@ -39,7 +39,7 @@ def get_chi_squared(fun_inputs, x_observed, y_observed, dy_observed, function,\
 
 
 def get_best_chi_fit(x_observed, y_observed, dy_observed, starting_values,\
-                     function, known_constants = None):
+                     function, known_constants = []):
     """
     USE THIS
     Performs the minimisation fit via scipy fmin
@@ -66,7 +66,7 @@ def get_best_chi_fit(x_observed, y_observed, dy_observed, starting_values,\
 def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
                      function, fitted_vals, chi_val, \
                          percentage_of_variable=0.01, resolution = 100,\
-                             known_constants = None):
+                             known_constants = []):
     """
     does a lot
     USE THIS
@@ -105,18 +105,15 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
 
             working_unc = abs(read_var_multidimension_index(meshes[index], j) \
                               - fitted_value)
-            print(j, current_unc, working_unc)
             if working_unc > current_unc[index]:
                 current_unc[index] = working_unc
-                print(working_unc)
     if current_unc == [0] * len(fitted_vals):
         print("failed to find uncertainties check resolution and range")
-    print(current_unc)
     return current_unc
 
 
 def get_chi_squared_mesh(x_observed, y_observed, dy_observed, meshes,\
-                         function, known_constants = None):
+                         function, known_constants = []):
 
     """
     converts numpy meshes to python list, creates a chi squared mesh (outputs
