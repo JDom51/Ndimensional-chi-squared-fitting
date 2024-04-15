@@ -56,9 +56,14 @@ def get_best_chi_fit(x_observed, y_observed, dy_observed, starting_values,\
     returns python list with best return[0] = fit_values, return[1] = chi
     squared
     """
-    return op.fmin(get_chi_squared, starting_values, \
+    try:
+    vals = op.fmin(get_chi_squared, starting_values, \
            args = (x_observed, y_observed, dy_observed, function, \
                    known_constants), full_output = True, disp = True)
+    except ValueError:
+        vals = [np.array([None]*len(starting_values)), None]
+        print("Check the dimensions and values of your input arrays")
+    return vals
 
 
 ###############################################################################
@@ -87,28 +92,31 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
     returns python 1d length len(fitted_values) with uncertainties in same 
     order as fitted_vals
     """
-
-    variables = []
-    current_unc = [0] * len(fitted_vals)
-    #generates initial meshes of values
-    for variable in fitted_vals:
-        variables.append(np.linspace(variable*(1-percentage_of_variable), \
-        variable*(1+percentage_of_variable), resolution))
-    meshes = np.meshgrid(*variables)
-    chi_mesh = get_chi_squared_mesh(x_observed, y_observed, dy_observed, \
+    try:
+       variables = []
+       current_unc = [0] * len(fitted_vals)
+       #generates initial meshes of values
+       for variable in fitted_vals:
+           variables.append(np.linspace(variable*(1-percentage_of_variable), \
+           variable*(1+percentage_of_variable), resolution))
+       meshes = np.meshgrid(*variables)
+       chi_mesh = get_chi_squared_mesh(x_observed, y_observed, dy_observed, \
                                     meshes.copy(), function, known_constants)
-    target = chi_val + 1
-    dt = target*0.25
-    indicies = d_contour(chi_mesh, target, dt)
-    for index, fitted_value in enumerate(fitted_vals):
-        for j in indicies:
+        target = chi_val + 1
+        dt = target*0.25
+        indicies = d_contour(chi_mesh, target, dt)
+        for index, fitted_value in enumerate(fitted_vals):
+            for j in indicies:
 
-            working_unc = abs(read_var_multidimension_index(meshes[index], j) \
+                working_unc = abs(read_var_multidimension_index(meshes[index], j) \
                               - fitted_value)
-            if working_unc > current_unc[index]:
-                current_unc[index] = working_unc
-    if current_unc == [0] * len(fitted_vals):
-        print("failed to find uncertainties check resolution and range")
+                if working_unc > current_unc[index]:
+                    current_unc[index] = working_unc
+        if current_unc == [0] * len(fitted_vals):
+            print("failed to find uncertainties check resolution and range")
+    except ValueError:
+        print("Check the dimensions and values of your input arrays")
+        current_unc = np.array([None]*len(fitted_vals))
     return current_unc
 
 
