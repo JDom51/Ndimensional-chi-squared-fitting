@@ -70,8 +70,8 @@ def get_best_chi_fit(x_observed, y_observed, dy_observed, starting_values,\
 ########################### CHI MINIMISATION ERROR ############################
 def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
                      function, fitted_vals, chi_val, \
-                         percentage_of_variable=0.01, resolution = 100,\
-                             known_constants = []):
+                         percentage_of_variable=0.01, resolution = 100,
+                           pt = 0.3, known_constants = []):
     """
     USE THIS
     performs meshgrid operations to find the uncertainties on fitted values
@@ -86,6 +86,7 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
     resolution:     int, size/rank of mesh grid
     percentage_of_variable:     float < 1, selects range over which the mesh is
     taken.
+    pt:                 leeway to find the contour in the chi sqaured mesh
     known_constants:    python 1d list of constants that are used in function
 
     returns python 1d length len(fitted_values) with uncertainties in same 
@@ -102,7 +103,7 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
         chi_mesh = get_chi_squared_mesh(x_observed, y_observed, dy_observed, \
                                     meshes.copy(), function, known_constants)
         target = chi_val + 1
-        dt = target*0.25
+        dt = target*pt
         indicies = d_contour(chi_mesh, target, dt)
         for index, fitted_value in enumerate(fitted_vals):
             for j in indicies:
