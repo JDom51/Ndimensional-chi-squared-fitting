@@ -21,3 +21,11 @@ and percentage_of_variable where you often need to set see_chi_mesh to true and 
 locate a chi_mesh (as the time complexity of this code is quite huge reasonable resolutions for 3d on my computer
 are about 500 for 2mins, 4d is about 120 for >20mins) this means that you have to get quite precise values for pt
 and percentage_of_variable for the uncertainties to be located.
+
+
+My computer ASUS TUF GAMING A15
+num dimensions | resolution   | time
+2              | <4000        | <1min
+3              | 400          | ~1min
+4              | 50           | <1min
+4              | 120          | ~20min
