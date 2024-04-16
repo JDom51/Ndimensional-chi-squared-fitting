@@ -14,3 +14,10 @@ and trying to start the project so it is possible for there to be some bugs.
 
 I will be testing it throughout my years at university and make any changes and update it as I need to or
 notice anything that needs to be upgraded and have time.
+
+
+For get_best_chi_fit_error, for n>2 it becomes extremely sensitive to resolution, pt (percentage of target chi squared)
+and percentage_of_variable where you often need to set see_chi_mesh to true and play around with the 3 settings to 
+locate a chi_mesh (as the time complexity of this code is quite huge reasonable resolutions for 3d on my computer
+are about 500 for 2mins, 4d is about 120 for >20mins) this means that you have to get quite precise values for pt
+and percentage_of_variable for the uncertainties to be located.
