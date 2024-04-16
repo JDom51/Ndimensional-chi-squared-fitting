@@ -70,8 +70,8 @@ def get_best_chi_fit(x_observed, y_observed, dy_observed, starting_values,\
 ########################### CHI MINIMISATION ERROR ############################
 def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
                      function, fitted_vals, chi_val, \
-                         percentage_of_variable=0.01, resolution = 100,
-                           pt = 0.3, known_constants = []):
+                         percentage_of_variable=0.01, resolution = 100, \
+                             pt =0.3, known_constants = [], see_chi_mesh = False):
     """
     USE THIS
     performs meshgrid operations to find the uncertainties on fitted values
@@ -92,6 +92,7 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
     returns python 1d length len(fitted_values) with uncertainties in same 
     order as fitted_vals
     """
+
     try:
         variables = []
         current_unc = [0] * len(fitted_vals)
@@ -102,23 +103,26 @@ def get_best_chi_fit_error(x_observed, y_observed, dy_observed, \
         meshes = np.meshgrid(*variables)
         chi_mesh = get_chi_squared_mesh(x_observed, y_observed, dy_observed, \
                                     meshes.copy(), function, known_constants)
+        if see_chi_mesh:
+            print(chi_mesh)
         target = chi_val + 1
         dt = target*pt
         indicies = d_contour(chi_mesh, target, dt)
         for index, fitted_value in enumerate(fitted_vals):
             for j in indicies:
-
                 working_unc = abs(read_var_multidimension_index(meshes[index], j) \
                               - fitted_value)
                 if working_unc > current_unc[index]:
                     current_unc[index] = working_unc
-        if current_unc == [0]*len(fitted_vals):
-            print("failed to find uncertainties check resolution and range")
+        if current_unc == [0] * len(fitted_vals):
+            print("failed to find uncertainties check resolution and range,"\
+                   +"\ncan set see_chi_mesh to True to also check matrix."\
+                       +"as altering resolution percentage of target(pt) and"
+                       +"percetnage_of_variable can help.")
     except ValueError:
         print("Check the dimensions and values of your input arrays")
         current_unc = np.array([None]*len(fitted_vals))
     return current_unc
-
 
 def get_chi_squared_mesh(x_observed, y_observed, dy_observed, meshes,\
                          function, known_constants = []):
