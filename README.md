@@ -24,8 +24,8 @@ and percentage_of_variable for the uncertainties to be located.
 
 
 My computer ASUS TUF GAMING A15
-num dimensions | resolution   | time
-2              | <4000        | <1min
-3              | 400          | ~1min
-4              | 50           | <1min
+num dimensions | resolution   | time\n
+2              | <4000        | <1min\n
+3              | 400          | ~1min\n
+4              | 50           | <1min\n
 4              | 120          | ~20min
